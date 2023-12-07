@@ -1,73 +1,35 @@
-// import logo from './logo.svg';
-import './App.css';
-import About from './components/About';
-import Navbar from './components/Navbar';
-import TextForm from './components/TextForm';
-import React, { useState } from 'react';
-import Alert from './components/Alert';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
-function App() {
-  const [mode, setMode] = useState('light');
+import React, { useState } from 'react'
+import Navbar from './components/Navbar'
+import TextForm from './components/TextForm'
+import About from './components/About'
 
-  const [alert, setAlert] = useState(null);
+export default function App() {
 
-  //it will help to show messages on alert
-  const showAlert = (message, type) => {
-    setAlert({
-      msg: message,
-      type: type,
-    })
+  const [theme, setTheme] = useState("light");
 
-    setTimeout(() => {
-      setAlert(null);
-    }, 1500);
-  }
-  const toggleMode = () => {
-    if (mode === 'light') {
-      setMode('dark');
-      document.body.style.backgroundColor = 'grey';
-      showAlert("dark mode has been enabled", "success");
-      document.title = 'textutils-darkMode';
+  const toggleTheme = () => {
+    if (theme === "light") {
+      setTheme("dark");
     }
     else {
-      setMode('light');
-      document.body.style.backgroundColor = 'white';
-      showAlert("light mode has been enabled", "success");
-      document.title = 'textutils-lightMode';
-
+      setTheme("light");
     }
   }
+
+
   return (
-    <>
-    <Router>
-      <Navbar title="Text-Insight" mode={mode} toggleMode={toggleMode} />
+    < >
+      <div className={`vh-100 bg-${theme === "light" ? "white" : "black"} text-${theme === "light" ? "black" : "white"}`}>
 
-      <Alert alert={alert} />
+        <Navbar title={"textInsight"} theme={theme} toggleTheme={toggleTheme} />
 
-      <div className="container my-3" >
-        <Switch>
-          <Route exact path="/about">
-            <About/>
-          </Route>
-
-          <Route exact path="/">
-            <TextForm heading="enter the text to analyse" mode={mode} showAlert={showAlert} />
-          </Route>
-        </Switch>
+        <div className='container my-3'>
+          <TextForm heading={"Enter text to analyze"} theme={theme} />
         </div>
-        </Router>
 
-      
+        {/* <About /> */}
+      </div>
 
-      {/* <About/> */}
     </>
-
-  );
+  )
 }
-
-export default App;
